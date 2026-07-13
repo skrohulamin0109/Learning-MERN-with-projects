@@ -50,8 +50,29 @@ const getNoteById = async (req, res) => {
         return res.status(500).json({ message: "Internal server error" });
     }
 };
-const updateNote = (req, res) => {
-    res.json({ message: "updateNote" });
+const updateNote = async (req, res) => {
+    try {
+        const { noteId } = req.params;
+        const userId = req.userId;
+        const { title, content } = req.body; // new updated title and content
+
+
+        const note = await Note.findById(noteId);
+        if (!note) return res.status(400).json({ message: "Bad Request." });
+
+        if (note.user.toString() !== userId) {
+            return res.status(403).json({ message: "Unauthorized access" });
+        }
+
+        note.title = title;
+        note.content = content;
+        await note.save();
+
+        return res.status(200).json(note);
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({ message: "Internal server error" });
+    }
 };
 const deleteNote = (req, res) => {
     res.json({ message: "deleteNote" });
