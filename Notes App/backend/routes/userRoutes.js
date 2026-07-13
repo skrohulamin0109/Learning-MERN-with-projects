@@ -9,10 +9,10 @@ const {
 } = require("../controllers/userController");
 const verifyToken = require("../middlewares/authMiddleware");
 
-userRouter.route("/").get(verifyToken, getAllNotes);
-userRouter.route("/create-note").post(verifyToken, createNote);
+userRouter.route("/:userId").get(verifyToken, getAllNotes);
+userRouter.route("/:userId/create-note").post(verifyToken, createNote);
 userRouter
-    .route("/:Id")
+    .route("/userId/:noteId")
     .get(verifyToken, getNoteById)
     .put(verifyToken, updateNote)
     .delete(verifyToken, deleteNote);

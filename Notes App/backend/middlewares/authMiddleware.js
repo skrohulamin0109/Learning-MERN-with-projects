@@ -20,7 +20,8 @@ const verifyToken = (req, res, next) => {
             next();
         });
     } catch (err) {
-       return res.status(500).json({ error: `${err}` })
+        console.error('Token verification error: ',err);
+        return res.status(500).json({ message: "Internal server error" });
     }
 };
 

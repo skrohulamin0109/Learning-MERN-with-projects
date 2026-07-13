@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.json())
 app.use('/auth', authRoutes);
-app.use('/users', userRoutes)
+app.use('/auth/users', userRoutes)
 
 app.listen(PORT, ()=>{
   console.log(`Express server listening at http://localhost:${PORT}`)

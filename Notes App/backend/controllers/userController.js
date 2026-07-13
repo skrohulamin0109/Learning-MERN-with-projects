@@ -1,9 +1,22 @@
 const Note = require("../models/noteModel");
-const User = require('../models/userModel');
+const User = require("../models/userModel");
 
-const getAllNotes = (req, res) => {
-    res.json({ message: "getAllUsers" });
+const getAllNotes = async (req, res) => {
+    try {
+        const userId = req.userId;
+        const allNotes = await Note.find({ user: userId });
+
+        if (allNotes.length === 0) {
+            return res.status(200).json({ message: "No notes found." });
+        }
+
+        return res.status(200).json(allNotes);
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({ message: "Internal server error" });
+    }
 };
+  
 const createNote = async (req, res) => {
     try {
         const { title, content, user } = req.body;
@@ -13,7 +26,7 @@ const createNote = async (req, res) => {
             user: user,
         });
 
-        res.status(201).json(newNote)
+        res.status(201).json(newNote);
     } catch (err) {
         res.status(500).json({ error: ` ${err.message}` });
     }
